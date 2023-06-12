@@ -30,13 +30,26 @@ elif sys.platform == 'darwin':
     _libsbaprojs = ctypes.CDLL("libsbaprojs.dylib")
     # THIS MAY NEED DEBUGGING
 
+# elif sys.platform == 'win32' or sys.platform == 'win64':
+#     # On Windows,
+#     try:
+#         _libsbaprojs = ctypes.CDLL("libsbaprojs.dll")
+#     except:
+#         _libsbaprojs = ctypes.CDLL("libsbaprojs_p3.dll")
+#     # THIS MAY NEED DEBUGGING
 elif sys.platform == 'win32' or sys.platform == 'win64':
-    # On Windows,
+    # on Windows,
     try:
-        _libsbaprojs = ctypes.CDLL("libsbaprojs.dll")
+        if sys.version_info < (3,8):
+            _libsbaprojs = ctypes.CDLL("libsbaprojs.dll")
+        else:
+            _libsbaprojs = ctypes.CDLL("libsbaprojs.dll", winmode=0)
     except:
-        _libsbaprojs = ctypes.CDLL("libsbaprojs_p3.dll")
-    # THIS MAY NEED DEBUGGING
+        if sys.version_info < (3,8):
+            _libsbaprojs = ctypes.CDLL("libsbaprojs_p3.dll")
+        else:
+            _libsbaprojs = ctypes.CDLL("libsbaprojs_p3.dll", winmode=0)
+        # THIS MAY NEED DEBUGGING
 
 
 # This is used for going from Python into C

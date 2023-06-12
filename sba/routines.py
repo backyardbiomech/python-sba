@@ -33,12 +33,25 @@ elif sys.platform == 'darwin':
     _libsba = ctypes.CDLL("libsba.dylib")
     # THIS MAY NEED DEBUGGING
 
+# elif sys.platform == 'win32' or sys.platform == 'win64':
+#     # on Windows,
+#     try:
+#         _libsba = ctypes.CDLL("libsba.dll")
+#     except:
+#         _libsba = ctypes.CDLL("libsba_p3.dll")
+#     # THIS MAY NEED DEBUGGING
 elif sys.platform == 'win32' or sys.platform == 'win64':
     # on Windows,
     try:
-        _libsba = ctypes.CDLL("libsba.dll")
+        if sys.version_info < (3,8):
+            _libsba = ctypes.CDLL("libsba.dll")
+        else:
+            _libsba = ctypes.CDLL("libsba.dll", winmode=0)
     except:
-        _libsba = ctypes.CDLL("libsba_p3.dll")
+        if sys.version_info < (3,8):
+            _libsba = ctypes.CDLL("libsba_p3.dll")
+        else:
+            _libsba = ctypes.CDLL("libsba_p3.dll", winmode=0)
     # THIS MAY NEED DEBUGGING
 
 # "expert" drivers from sba.h (BU modified version 1.6.1)
